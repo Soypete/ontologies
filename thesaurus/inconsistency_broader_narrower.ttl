@@ -1,0 +1,14 @@
+# =============================================================================
+# inconsistency_broader_narrower.ttl - Consistency Test
+# =============================================================================
+# Tests detection of inconsistent broader/narrower relations
+# A cannot be both broader and narrower than B simultaneously
+# Use case: Testing OWL inconsistency detection
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <http://example.org/> .
+
+ex:conceptA a skos:Concept ;
+    skos:prefLabel "Concept A"@en ;
+    skos:broader ex:conceptB ;
+    skos:narrower ex:conceptB .

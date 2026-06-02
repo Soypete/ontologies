@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenSource Tech Ontologies</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 900px; margin: 0 auto; padding: 2rem; line-height: 1.6; }
+        h1 { color: #24292e; border-bottom: 2px solid #e1e4e8; padding-bottom: 0.5rem; }
+        h2 { color: #24292e; margin-top: 2rem; }
+        h3 { color: #586069; margin-bottom: 0.5rem; }
+        .category { background: #f6f8fa; border-radius: 6px; padding: 1rem; margin: 1rem 0; }
+        .file-list { list-style: none; padding: 0; }
+        .file-list li { padding: 0.5rem 0; border-bottom: 1px solid #e1e4e8; }
+        .file-list li:last-child { border-bottom: none; }
+        a { color: #0366d6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .description { color: #586069; font-size: 0.9rem; }
+        code { background: #f1f8ff; padding: 0.2rem 0.4rem; border-radius: 3px; font-size: 0.85rem; }
+        .badge { display: inline-block; padding: 0.1rem 0.4rem; border-radius: 12px; font-size: 0.75rem; margin-left: 0.5rem; }
+        .badge-tbox { background: #d4f5d4; color: #22863a; }
+        .badge-abox { background: #e1f4ff; color: #0366d6; }
+        .badge-thesaurus { background: #fff3cd; color: #856404; }
+        .badge-course { background: #fce8e8; color: #cb2431; }
+        .competency { background: #f0f0f0; padding: 1rem; margin: 1rem 0; border-radius: 6px; }
+        .competency h4 { margin: 0 0 0.5rem 0; }
+    </style>
+</head>
+<body>
+    <h1>OpenSource Tech Ontologies</h1>
+    <p>RDF/OWL ontologies for learning software development concepts. Published via GitHub Pages.</p>
+
+    <div class="competency">
+        <h4>Competency Questions</h4>
+        <ul>
+            <li>What skills are required for a specific role?</li>
+            <li>What topics should I learn first for a given skill?</li>
+            <li>What roles can I pursue after learning a skill?</li>
+            <li>What projects can I build with a skill?</li>
+            <li>What is the learning path from beginner to a target role?</li>
+        </ul>
+    </div>
+
+    <h2>software/ - Course Ontologies (PKO-based)</h2>
+    <div class="category">
+        <h3>go-intro.ttl <span class="badge badge-course">Course</span></h3>
+        <p class="description">Introduction to Go Programming - 5 lessons covering Go basics with competency questions</p>
+        <ul class="file-list">
+            <li><a href="software/go-intro.ttl">View TTL</a> - Philosophy → Installation → First File → Hello World → Quiz</li>
+        </ul>
+
+        <h3>go-basics-llm.ttl <span class="badge badge-course">LLM-generated</span></h3>
+        <p class="description">Learning Go Basics - 5-step course</p>
+        <ul class="file-list">
+            <li><a href="software/go-basics-llm.ttl">View TTL</a> - Hello World → Variables → Functions → Conditionals → Loops</li>
+        </ul>
+
+        <h3>production-go-llm.ttl <span class="badge badge-course">LLM-generated</span></h3>
+        <p class="description">Production Go Programming - Advanced course</p>
+        <ul class="file-list">
+            <li><a href="software/production-go-llm.ttl">View TTL</a> - Scheduler → pprof → Worker Pools → Testing → Benchmarking</li>
+        </ul>
+
+        <h3>self-hosted-ai-llm.ttl <span class="badge badge-course">LLM-generated</span></h3>
+        <p class="description">Self-Hosted AI - Running LLMs locally</p>
+        <ul class="file-list">
+            <li><a href="software/self-hosted-ai-llm.ttl">View TTL</a> - Ollama → llama.cpp → Quantization → vLLM → Load Testing</li>
+        </ul>
+    </div>
+
+    <h2>thesaurus/ - SKOS Vocabularies</h2>
+    <div class="category">
+        <h3>full_skos.ttl <span class="badge badge-thesaurus">Thesaurus</span></h3>
+        <p class="description">Complete SKOS thesaurus with transitive inference testing</p>
+        <ul class="file-list">
+            <li><a href="thesaurus/full_skos.ttl">View TTL</a> - Education concept scheme, Wikidata mapping, collections</li>
+        </ul>
+
+        <h3>transitive_broader.ttl <span class="badge badge-thesaurus">Test</span></h3>
+        <p class="description">Tests SKOS transitive inference (course → onlineCourse → selfPaced)</p>
+        <ul class="file-list">
+            <li><a href="thesaurus/transitive_broader.ttl">View TTL</a></li>
+        </ul>
+
+        <h3>symmetric_related.ttl <span class="badge badge-thesaurus">Test</span></h3>
+        <p class="description">Tests symmetric property inference</p>
+        <ul class="file-list">
+            <li><a href="thesaurus/symmetric_related.ttl">View TTL</a></li>
+        </ul>
+
+        <h3>inconsistency_broader_narrower.ttl <span class="badge badge-thesaurus">Test</span></h3>
+        <p class="description">Tests OWL inconsistency detection</p>
+        <ul class="file-list">
+            <li><a href="thesaurus/inconsistency_broader_narrower.ttl">View TTL</a></li>
+        </ul>
+
+        <h3>cycle_detection.ttl <span class="badge badge-thesaurus">Test</span></h3>
+        <p class="description">Tests cycle detection in graph traversal</p>
+        <ul class="file-list">
+            <li><a href="thesaurus/cycle_detection.ttl">View TTL</a></li>
+        </ul>
+    </div>
+
+    <h2>education/ - Learning Ontologies</h2>
+    <div class="category">
+        <h3>TBOX_LEARNING_SOFTWARE.ttl <span class="badge badge-tbox">TBOX</span></h3>
+        <p class="description">Learning-to-Write-Software (L2WS) - Comprehensive schema ontology</p>
+        <ul class="file-list">
+            <li><a href="education/TBOX_LEARNING_SOFTWARE.ttl">View TTL</a> - 853 lines: Difficulty levels, domains, skills, roles, competency properties</li>
+        </ul>
+
+        <h3>edu.ttl <span class="badge badge-abox">ABox</span></h3>
+        <p class="description">Simple education ontology with examples</p>
+        <ul class="file-list">
+            <li><a href="education/edu.ttl">View TTL</a> - Person/Student/Instructor/Course/Lesson classes</li>
+        </ul>
+    </div>
+
+    <h2>social/ - Topic Vocabularies</h2>
+    <div class="category">
+        <h3>twitch_topics.ttl <span class="badge badge-thesaurus">Thesaurus</span></h3>
+        <p class="description">Twitch stream topics for software development</p>
+        <ul class="file-list">
+            <li><a href="social/twitch_topics.ttl">View TTL</a> - Programming, AI/ML, Infrastructure, Database categories</li>
+        </ul>
+    </div>
+
+    <h2>Tools</h2>
+    <div class="category">
+        <p>Validate TTL syntax:</p>
+        <code>riot --validate filename.ttl</code>
+        <p>Query with SPARQL (requires endpoint):</p>
+        <code>sparql --query="SELECT ?s ?p ?o WHERE { ?s ?p ?o }" --service=https://example.org/sparql</code>
+    </div>
+
+    <footer style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #e1e4e8; color: #586069;">
+        <p>License: MIT | <a href="https://github.com/soypete/soypete_tech_ontologies">GitHub Repository</a></p>
+    </footer>
+</body>
+</html>

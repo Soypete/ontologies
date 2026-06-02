@@ -1,0 +1,133 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pko: <https://w3id.org/pko#> .
+@prefix pp: <https://professor-pedro.dev/ontology#> .
+@prefix : <https://professor-pedro.dev/procedures/> .
+
+# =============================================================================
+# go-intro.ttl - Introduction to Go Programming
+# =============================================================================
+# PKO-based course procedure for learning Go basics
+# 5 lessons: Philosophy → Installation → First File → Hello World → Quiz
+# Includes competency questions (quiz) for package system and main function
+# Use case: GitHub Pages discovery of Go learning paths
+
+:lesson-go-intro
+    a pp:Course ;
+    dcterms:title "Introduction to Go Programming" ;
+    dcterms:description "Learn the fundamentals of Go programming language, from installation to your first program." ;
+    pp:objective "By the end of this lesson, you will understand Go's philosophy, have a working Go installation, and write your first Go program." ;
+    pp:estimatedDuration "30 minutes" ;
+    pp:difficulty pp:Beginner ;
+    pp:language "go" ;
+    pp:isPublished true ;
+    pko:hasStep :go-intro-step-1 , :go-intro-step-2 , :go-intro-step-3 , :go-intro-step-4 , :go-intro-step-5 .
+
+:go-intro-step-1
+    a pp:Lesson ;
+    dcterms:title "Understanding Go's Philosophy" ;
+    pp:order 1 ;
+    pp:instruction "Read about Go's core design principles and understand why it was created." ;
+    pp:expectedOutcome "You understand Go's emphasis on simplicity, concurrency support, and fast compilation." ;
+    pp:stepType pp:ReadStep ;
+    pp:content """# Go's Philosophy
+
+Go (or Golang) was created at Google in 2007 by Robert Griesemer, Rob Pike, and Ken Thompson. It was designed with these core principles:
+
+## Simplicity
+- Clean, readable syntax without unnecessary complexity
+- Small language specification (easy to learn the entire language)
+- No classes or inheritance - uses composition instead
+
+## Concurrency
+- Built-in support for concurrent programming with goroutines
+- Channels for safe communication between goroutines
+- Makes it easy to write programs that efficiently use multiple CPU cores
+
+## Fast Compilation
+- Compiles directly to machine code (no virtual machine)
+- Extremely fast compile times, even for large projects
+- Great for rapid development cycles
+
+## Practical Design
+- Strong standard library ("batteries included")
+- Built-in formatting tool (gofmt) - no style debates
+- Explicit error handling""" ;
+    pp:hasHint "Go is often called 'Golang' because 'go' is hard to search for online" ;
+    pp:hasHint "Go was designed to address pain points Google engineers faced with C++ and Java" .
+
+:go-intro-step-2
+    a pp:Lesson ;
+    dcterms:title "Verify Go Installation" ;
+    pp:order 2 ;
+    pp:instruction "Verify that Go is installed on your system by running the version command." ;
+    pp:expectedOutcome "You see a Go version number (e.g., 'go version go1.21.0 linux/amd64')." ;
+    pp:stepType pp:ExerciseStep ;
+    pp:verificationCommand "go version" ;
+    pp:hasHint "If Go is not installed, visit https://go.dev/dl/ to download it" ;
+    pp:hasHint "On Linux, you can also install via: sudo apt install golang-go" ;
+    pp:hasHint "Make sure $GOPATH/bin is in your PATH" .
+
+:go-intro-step-3
+    a pp:Lesson ;
+    dcterms:title "Create Your First Go File" ;
+    pp:order 3 ;
+    pp:instruction "Create a new file called main.go with the basic Go package structure." ;
+    pp:expectedOutcome "You have a main.go file with 'package main' as the first line." ;
+    pp:stepType pp:CodeStep ;
+    pp:content """Every Go program starts with a package declaration. For executable programs, this must be 'package main'.
+
+Create a file named main.go with:
+
+package main
+
+This tells Go that this file is part of the main package - the entry point for an executable program.""" ;
+    pp:hasHint "The package name 'main' is special - it tells Go this is an executable, not a library" ;
+    pp:hasHint "All files in the same directory should have the same package name" .
+
+:go-intro-step-4
+    a pp:Lesson ;
+    dcterms:title "Write Hello World" ;
+    pp:order 4 ;
+    pp:instruction "Complete your Go program by adding the main function and printing 'Hello, World!'." ;
+    pp:expectedOutcome "Running 'go run main.go' outputs 'Hello, World!' to the console." ;
+    pp:stepType pp:CodeStep ;
+    pp:content """Add the fmt import and main function to your program:
+
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+
+To run your program, use: go run main.go""" ;
+    pp:verificationCommand "go run main.go" ;
+    pp:hasHint "fmt is Go's formatting package for I/O operations" ;
+    pp:hasHint "The main() function is the entry point - execution starts here" ;
+    pp:hasHint "go run compiles and runs in one step; go build creates an executable" .
+
+:go-intro-step-5
+    a pp:Lesson ;
+    dcterms:title "Knowledge Check" ;
+    pp:order 5 ;
+    pp:instruction "Answer these questions to verify your understanding of Go basics." ;
+    pp:expectedOutcome "You can correctly answer questions about Go's package system and entry point." ;
+    pp:stepType pp:QuizStep ;
+    pp:hasQuestion :go-intro-q1 , :go-intro-q2 .
+
+:go-intro-q1
+    a pp:Question ;
+    pp:questionText "What package name is required for a runnable Go program?" ;
+    pp:answer "main" ;
+    pp:explanation "The 'package main' declaration tells the Go compiler this is an executable program, not a library. Libraries use other package names." .
+
+:go-intro-q2
+    a pp:Question ;
+    pp:questionText "What is the name of the entry point function in Go?" ;
+    pp:answer "main" ;
+    pp:explanation "The main() function in the main package is where execution begins. Every executable Go program must have exactly one main() function." .

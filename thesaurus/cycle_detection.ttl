@@ -1,0 +1,21 @@
+# =============================================================================
+# cycle_detection.ttl - Cycle Detection Test
+# =============================================================================
+# Tests handling of cycles: A → B → C → A
+# SKOS broader is not transitive-by-default, but cycles should be handled
+# Use case: Testing cycle detection in graph traversal
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <http://example.org/> .
+
+ex:A a skos:Concept ;
+    skos:prefLabel "A"@en ;
+    skos:broader ex:B .
+
+ex:B a skos:Concept ;
+    skos:prefLabel "B"@en ;
+    skos:broader ex:C .
+
+ex:C a skos:Concept ;
+    skos:prefLabel "C"@en ;
+    skos:broader ex:A .

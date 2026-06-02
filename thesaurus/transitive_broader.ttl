@@ -1,0 +1,20 @@
+# =============================================================================
+# transitive_broader.ttl - Transitive Broader Test
+# =============================================================================
+# Tests SKOS transitive inference: course → onlineCourse → selfPaced
+# Query: Does selfPaced have skos:broader course? (should be true via transitivity)
+# Use case: Testing transitive closure in RDF inference engines
+
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <http://example.org/> .
+
+ex:course a skos:Concept ;
+    skos:prefLabel "Course"@en .
+
+ex:onlineCourse a skos:Concept ;
+    skos:prefLabel "Online Course"@en ;
+    skos:broader ex:course .
+
+ex:selfPaced a skos:Concept ;
+    skos:prefLabel "Self-Paced"@en ;
+    skos:broader ex:onlineCourse .

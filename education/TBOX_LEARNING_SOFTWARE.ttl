@@ -1,0 +1,859 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+@prefix educonto: <http://purl.org/educonto/> .
+@prefix sw: <http://soypete.tech/l2ws/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+
+# =============================================================================
+# TBOX_LEARNING_SOFTWARE.ttl - Learning-to-Write-Software (L2WS) Ontology
+# =============================================================================
+#
+# Comprehensive TBOX (schema) ontology for software development education.
+# Provides controlled vocabulary with competency questions:
+# - What skills are required for a specific role?
+# - What topics should I learn first for a given skill?
+# - What roles can I pursue after learning a skill?
+# - What projects can I build with a skill?
+# - What is the learning path from beginner to a target role?
+#
+# Includes: Difficulty levels, Learning domains, Skills, Roles, Properties
+# Namespace: http://soypete.tech/l2ws/
+# Use case: GitHub Pages discovery with competency-based learning paths
+#
+# Version: 1.0.0
+# Created: 2026-04-06
+# =============================================================================
+
+<http://soypete.tech/l2ws>
+    a owl:Ontology ;
+    dcterms:title "Learning-to-Write-Software Ontology" ;
+    dcterms:description "A comprehensive ontology for modeling software development education with controlled vocabulary" ;
+    dcterms:creator "Professor Pedro Team" ;
+    dcterms:created "2026-04-06"^^xsd:date ;
+    owl:versionInfo "1.0.0" ;
+    owl:imports <http://schema.org/> ;
+    rdfs:seeAlso <https://schema.org/educationalLevel> .
+
+# =============================================================================
+# Difficulty Levels (aligned with schema:educationalLevel)
+# =============================================================================
+
+sw:Beginner a owl:Class ;
+    rdfs:subClassOf schema:EducationalLevel ;
+    rdfs:label "Beginner"@en ;
+    rdfs:comment "Entry-level difficulty for students new to the topic" ;
+    skos:definition "A designation indicating the material is entry-level, requiring no prior experience with the topic. Excludes specialized knowledge."@en ;
+    skos:scopeNote "Use for courses and lessons with no prerequisites. Learners need only basic literacy."@en ;
+    schema:educationalLevel "beginner" .
+
+sw:Intermediate a owl:Class ;
+    rdfs:subClassOf schema:EducationalLevel ;
+    rdfs:label "Intermediate"@en ;
+    rdfs:comment "Mid-level difficulty for students with foundational knowledge" ;
+    skos:definition "A designation indicating the material requires foundational knowledge of the topic. Learners should understand basic concepts before proceeding."@en ;
+    skos:scopeNote "Use for courses that build on Fundamentals or equivalent self-study."@en ;
+    schema:educationalLevel "intermediate" .
+
+sw:Advanced a owl:Class ;
+    rdfs:subClassOf schema:EducationalLevel ;
+    rdfs:label "Advanced"@en ;
+    rdfs:comment "Expert-level difficulty for experienced practitioners" ;
+    skos:definition "A designation indicating the material requires significant prior experience. Learners should have mastery of intermediate concepts."@en ;
+    skos:scopeNote "Use for courses targeting experienced practitioners. Requires strong foundational and intermediate skills."@en ;
+    schema:educationalLevel "advanced" .
+
+# =============================================================================
+# Primary Learning Domains
+# =============================================================================
+
+# ----- Fundamentals -----
+sw:Fundamentals a owl:Class ;
+    rdfs:label "Fundamentals"@en ;
+    rdfs:comment "Core programming concepts that form the foundation of software development" ;
+    skos:prefLabel "Fundamentals"@en ;
+    skos:definition "Core programming concepts including syntax, data structures, and control flow"@en .
+
+sw:Syntax a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Syntax"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Syntax"@en ;
+    skos:definition "The formal rules governing how code must be written in a programming language. Includes keywords, operators, and punctuation requirements."@en ;
+    skos:scopeNote "Language-agnostic concept. Specific syntax rules are taught in language-specific courses."@en .
+
+sw:ControlFlow a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Control Flow"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Control Flow"@en ;
+    skos:definition "The order in which statements are executed. Includes conditionals, loops, and branching structures."@en ;
+    skos:scopeNote "Fundamental concept applicable to all procedural and imperative languages."@en .
+
+sw:DataStructures a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Data Structures"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Data Structures"@en ;
+    skos:definition "Ways of organizing and storing data for efficient access and modification. Includes arrays, lists, maps, trees, and graphs."@en ;
+    skos:scopeNote "Excludes algorithms - focuses purely on data organization patterns."@en .
+
+sw:Functions a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Functions"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Functions"@en ;
+    skos:altLabel "Function Definition"@en ;
+    skos:altLabel "Methods"@en ;
+    skos:altLabel "Procedures"@en ;
+    skos:altLabel "Subroutines"@en ;
+    skos:definition "Reusable blocks of code that perform specific tasks. Includes parameters, return values, closures, and scope."@en .
+
+sw:Types a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Types"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Types"@en ;
+    skos:altLabel "Data Types"@en ;
+    skos:definition "Classification of values that determines the operations that can be performed. Includes primitives, composites, and custom types."@en .
+
+sw:Debugging a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Debugging"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Debugging"@en ;
+    skos:altLabel "Troubleshooting"@en ;
+    skos:altLabel "Bug Fixing"@en ;
+    skos:definition "The process of identifying and resolving defects in software. Includes logging, breakpoints, testing, and diagnostic techniques."@en .
+
+sw:MemoryManagement a owl:Class ;
+    rdfs:subClassOf sw:Fundamentals ;
+    rdfs:label "Memory Management"@en ;
+    skos:broader sw:Fundamentals ;
+    skos:prefLabel "Memory Management"@en ;
+    skos:altLabel "Memory"@en ;
+    skos:definition "The process of controlling and coordinating computer memory allocation for programs. Includes heap, stack, garbage collection, and manual memory management."@en .
+
+# ----- Domains -----
+sw:Domains a owl:Class ;
+    rdfs:label "Application Domains"@en ;
+    rdfs:comment "Different domains of software development" ;
+    skos:prefLabel "Application Domains"@en ;
+    skos:definition "Different fields of software development where foundational skills are applied. Includes web, systems, data science, mobile, and game development."@en .
+
+sw:WebDevelopment a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Web Development"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Web Development"@en ;
+    skos:altLabel "Web Dev"@en ;
+    skos:altLabel "Frontend"@en ;
+    skos:altLabel "Backend"@en ;
+    skos:altLabel "Full-Stack"@en ;
+    skos:definition "Development of applications accessed via the web. Includes frontend (HTML, CSS, JavaScript), backend (APIs, servers), and full-stack development."@en ;
+    skos:scopeNote "Excludes desktop apps with web-like frameworks. Focus on HTTP, browsers, and web servers."@en ;
+    educonto:keywordRelatesToFieldOfStudy <http://purl.org/edukg/computer_science> ;
+    educonto:keywordRelatesToFieldOfStudy <http://purl.org/edukg/web_development> .
+
+sw:SystemsProgramming a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Systems Programming"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Systems Programming"@en ;
+    skos:altLabel "Systems Dev"@en ;
+    skos:altLabel "Low-Level Programming"@en ;
+    skos:definition "Development of system-level software including operating systems, drivers, and embedded systems. Uses languages like C, C++, Rust, and Go."@en ;
+    educonto:keywordRelatesToFieldOfStudy <http://purl.org/edukg/computer_science> .
+
+sw:DataScience a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Data Science"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Data Science"@en ;
+    skos:altLabel "Data Analytics"@en ;
+    skos:altLabel "Data Engineering"@en ;
+    skos:definition "Extracting insights from data using statistics, programming, and domain expertise. Includes data analysis, visualization, and machine learning."@en ;
+    educonto:keywordRelatesToFieldOfStudy <http://purl.org/edukg/data_science> .
+
+sw:MobileDevelopment a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Mobile Development"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Mobile Development"@en ;
+    skos:altLabel "Mobile Dev"@en ;
+    skos:altLabel "iOS"@en ;
+    skos:altLabel "Android"@en ;
+    skos:definition "Development of applications for mobile devices. Includes native (Swift, Kotlin) and cross-platform (React Native, Flutter) approaches."@en .
+
+sw:GameDevelopment a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Game Development"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Game Development"@en ;
+    skos:altLabel "Game Dev"@en ;
+    skos:altLabel "Game Programming"@en ;
+    skos:definition "Development of video games and interactive experiences. Includes game engines, physics, graphics, and gameplay programming."@en .
+
+sw:DevRel a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "Developer Relations"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "Developer Relations"@en ;
+    skos:altLabel "DevRel"@en ;
+    skos:altLabel "Developer Advocacy"@en ;
+    skos:definition "Building relationships with developers through documentation, community, and technical content."@en .
+
+sw:APIDesign a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "API Design"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "API Design"@en ;
+    skos:altLabel "REST API"@en ;
+    skos:altLabel "API Development"@en ;
+    skos:definition "The practice of designing application programming interfaces for clarity, consistency, and usability."@en .
+
+sw:CLI a owl:Class ;
+    rdfs:subClassOf sw:Domains ;
+    rdfs:label "CLI Development"@en ;
+    skos:broader sw:Domains ;
+    skos:prefLabel "CLI Development"@en ;
+    skos:altLabel "Command Line"@en ;
+    skos:altLabel "Terminal Apps"@en ;
+    skos:definition "Development of command-line interface applications and tools."@en .
+
+# ----- Architecture -----
+sw:Architecture a owl:Class ;
+    rdfs:label "Software Architecture"@en ;
+    rdfs:comment "Design principles and architectural patterns" ;
+    skos:prefLabel "Software Architecture"@en ;
+    skos:definition "Design principles, patterns, and structural approaches for building software systems."@en ;
+    skos:scopeNote "Focuses on high-level structure, not implementation details."@en .
+
+sw:DesignPatterns a owl:Class ;
+    rdfs:subClassOf sw:Architecture ;
+    rdfs:label "Design Patterns"@en ;
+    skos:broader sw:Architecture ;
+    skos:prefLabel "Design Patterns"@en ;
+    skos:altLabel "Patterns"@en ;
+    skos:altLabel "Architectural Patterns"@en ;
+    skos:definition "Reusable solutions to commonly occurring problems in software design. Includes creational, structural, and behavioral patterns."@en .
+
+sw:SoftwareDesign a owl:Class ;
+    rdfs:subClassOf sw:Architecture ;
+    rdfs:label "Software Design"@en ;
+    skos:broader sw:Architecture ;
+    skos:prefLabel "Software Design"@en ;
+    skos:altLabel "System Design"@en ;
+    skos:altLabel "Application Design"@en ;
+    skos:definition "The process of defining software architecture, components, and interfaces to meet specified requirements."@en .
+
+sw:Microservices a owl:Class ;
+    rdfs:subClassOf sw:Architecture ;
+    rdfs:label "Microservices"@en ;
+    skos:broader sw:Architecture ;
+    skos:prefLabel "Microservices"@en ;
+    skos:altLabel "Microservices Architecture"@en ;
+    skos:altLabel "MSA"@en ;
+    skos:definition "An architectural style that structures an application as a collection of loosely coupled services."@en .
+
+sw:EventDriven a owl:Class ;
+    rdfs:subClassOf sw:Architecture ;
+    rdfs:label "Event-Driven Architecture"@en ;
+    skos:broader sw:Architecture ;
+    skos:prefLabel "Event-Driven Architecture"@en ;
+    skos:altLabel "EDA"@en ;
+    skos:definition "An architectural pattern where services communicate through events rather than direct calls."@en .
+
+sw:Hexagonal a owl:Class ;
+    rdfs:subClassOf sw:Architecture ;
+    rdfs:label "Hexagonal Architecture"@en ;
+    skos:broader sw:Architecture ;
+    skos:prefLabel "Hexagonal Architecture"@en ;
+    skos:altLabel "Ports and Adapters"@en ;
+    skos:definition "An architectural pattern that separates core business logic from external concerns via ports and adapters."@en .
+
+# ----- Infrastructure -----
+sw:Infrastructure a owl:Class ;
+    rdfs:label "Infrastructure"@en ;
+    rdfs:comment "DevOps, cloud, and infrastructure management" ;
+    skos:prefLabel "Infrastructure"@en ;
+    skos:definition "DevOps practices, cloud computing, containerization, CI/CD, and infrastructure management. Focuses on deployment and operations."@en ;
+    skos:scopeNote "Includes all operational aspects of software delivery."@en .
+
+sw:DevOps a owl:Class ;
+    rdfs:subClassOf sw:Infrastructure ;
+    rdfs:label "DevOps"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:prefLabel "DevOps"@en ;
+    skos:definition "Practices that combine software development and IT operations to shorten development lifecycle and deliver continuously."@en .
+
+sw:CloudComputing a owl:Class ;
+    rdfs:subClassOf sw:Infrastructure ;
+    rdfs:label "Cloud Computing"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:prefLabel "Cloud Computing"@en ;
+    skos:altLabel "Cloud"@en ;
+    skos:altLabel "Cloud Services"@en ;
+    skos:definition "Delivery of computing services over the internet. Includes IaaS, PaaS, and SaaS models."@en .
+
+sw:Containerization a owl:Class ;
+    rdfs:subClassOf sw:Infrastructure ;
+    rdfs:label "Containerization"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:prefLabel "Containerization"@en ;
+    skos:altLabel "Containers"@en ;
+    skos:altLabel "Docker"@en ;
+    skos:altLabel "Podman"@en ;
+    skos:definition "Packaging applications with their dependencies into isolated containers."@en .
+
+sw:CICD a owl:Class ;
+    rdfs:subClassOf sw:Infrastructure ;
+    rdfs:label "CI/CD"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:prefLabel "CI/CD"@en ;
+    skos:altLabel "Continuous Integration"@en ;
+    skos:altLabel "Continuous Deployment"@en ;
+    skos:altLabel "DevOps Pipelines"@en ;
+    skos:definition "Practices for automating integration and deployment of code changes."@en .
+
+sw:InfrastructureAsCode a owl:Class ;
+    rdfs:subClassOf sw:Infrastructure ;
+    rdfs:label "Infrastructure as Code"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:prefLabel "Infrastructure as Code"@en ;
+    skos:altLabel "IaC"@en ;
+    skos:altLabel "Config Management"@en ;
+    skos:definition "Managing infrastructure through code rather than manual processes. Includes Terraform, Ansible, and CloudFormation."@en .
+
+# ----- Databases -----
+sw:Databases a owl:Class ;
+    rdfs:label "Databases"@en ;
+    rdfs:comment "Database design, SQL, and data storage" ;
+    skos:prefLabel "Databases"@en ;
+    skos:definition "Database design, SQL, NoSQL, data modeling, caching, and message queuing. Focuses on persistent data storage."@en ;
+    skos:scopeNote "Excludes in-memory data structures (those are DataStructures under Fundamentals)."@en .
+
+sw:SQL a owl:Class ;
+    rdfs:subClassOf sw:Databases ;
+    rdfs:label "SQL"@en ;
+    skos:broader sw:Databases ;
+    skos:prefLabel "SQL"@en ;
+    skos:altLabel "Relational Databases"@en ;
+    skos:altLabel "RDBMS"@en ;
+    skos:definition "Database systems using structured query language. Includes PostgreSQL, MySQL, and SQLite."@en .
+
+sw:NoSQL a owl:Class ;
+    rdfs:subClassOf sw:Databases ;
+    rdfs:label "NoSQL"@en ;
+    skos:broader sw:Databases ;
+    skos:prefLabel "NoSQL"@en ;
+    skos:altLabel "Non-Relational"@en ;
+    skos:altLabel "Document Databases"@en ;
+    skos:definition "Database systems that do not use relational tables. Includes document, key-value, column, and graph databases."@en .
+
+sw:DataModeling a owl:Class ;
+    rdfs:subClassOf sw:Databases ;
+    rdfs:label "Data Modeling"@en ;
+    skos:broader sw:Databases ;
+    skos:prefLabel "Data Modeling"@en ;
+    skos:altLabel "Schema Design"@en ;
+    skos:altLabel "Database Design"@en ;
+    skos:definition "The process of defining data structures and relationships in a database."@en .
+
+sw:Caching a owl:Class ;
+    rdfs:subClassOf sw:Databases ;
+    rdfs:label "Caching"@en ;
+    skos:broader sw:Databases ;
+    skos:prefLabel "Caching"@en ;
+    skos:altLabel "Cache"@en ;
+    skos:altLabel "Cache Systems"@en ;
+    skos:definition "Temporary storage of frequently accessed data for fast retrieval."@en .
+
+sw:MessageQueues a owl:Class ;
+    rdfs:subClassOf sw:Databases ;
+    rdfs:label "Message Queues"@en ;
+    skos:broader sw:Databases ;
+    skos:prefLabel "Message Queues"@en ;
+    skos:altLabel "Message Brokering"@en ;
+    skos:altLabel "MQ"@en ;
+    skos:definition "Asynchronous communication between services via messages. Includes RabbitMQ, Kafka, and Redis."@en .
+
+# ----- AI -----
+sw:AI a owl:Class ;
+    rdfs:label "Artificial Intelligence"@en ;
+    rdfs:comment "AI and machine learning in software development" ;
+    skos:prefLabel "Artificial Intelligence"@en ;
+    skos:altLabel "Machine Intelligence"@en ;
+    skos:definition "AI and machine learning in software development, including LLM engineering, prompt engineering, RAG, and AI agents."@en ;
+    skos:scopeNote "Focuses on AI application in software, not theoretical AI research."@en .
+
+sw:MachineLearning a owl:Class ;
+    rdfs:subClassOf sw:AI ;
+    rdfs:label "Machine Learning"@en ;
+    skos:broader sw:AI ;
+    skos:prefLabel "Machine Learning"@en ;
+    skos:altLabel "ML"@en ;
+    skos:altLabel "Statistical Learning"@en ;
+    skos:definition "Systems that learn from data to make predictions or decisions without explicit programming."@en .
+
+sw:LLMEngineering a owl:Class ;
+    rdfs:subClassOf sw:AI ;
+    rdfs:label "LLM Engineering"@en ;
+    skos:broader sw:AI ;
+    skos:prefLabel "LLM Engineering"@en ;
+    skos:altLabel "LLM Dev"@en ;
+    skos:altLabel "Large Language Model Engineering"@en ;
+    skos:definition "Building and optimizing applications powered by large language models."@en .
+
+sw:PromptEngineering a owl:Class ;
+    rdfs:subClassOf sw:AI ;
+    rdfs:label "Prompt Engineering"@en ;
+    skos:broader sw:AI ;
+    skos:prefLabel "Prompt Engineering"@en ;
+    skos:altLabel "Prompt Design"@en ;
+    skos:altLabel "Prompt Tuning"@en ;
+    skos:definition "The practice of designing inputs to AI models to achieve desired outputs."@en .
+
+sw:RAG a owl:Class ;
+    rdfs:subClassOf sw:AI ;
+    rdfs:label "RAG"@en ;
+    skos:broader sw:AI ;
+    skos:prefLabel "Retrieval-Augmented Generation"@en ;
+    skos:altLabel "RAG"@en ;
+    skos:definition "Architecture combining retrieval systems with generative AI for accurate, grounded responses."@en .
+
+sw:AIAgents a owl:Class ;
+    rdfs:subClassOf sw:AI ;
+    rdfs:label "AI Agents"@en ;
+    skos:broader sw:AI ;
+    skos:prefLabel "AI Agents"@en ;
+    skos:altLabel "Agentic AI"@en ;
+    skos:altLabel "Autonomous AI"@en ;
+    skos:definition "AI systems that can take actions autonomously to achieve goals. Includes reasoning, planning, tool use, and iterative execution."@en .
+
+# =============================================================================
+# Core Classes
+# =============================================================================
+
+sw:Course a owl:Class ;
+    rdfs:subClassOf schema:Course ;
+    rdfs:label "Course"@en ;
+    rdfs:comment "A learning course in software development" ;
+    skos:definition "A structured learning unit with title, description, difficulty level, and ordered lessons."@en ;
+    dcterms:description "Maps to the 'courses' table. Has title, description, difficulty, and contains ordered lessons." .
+
+sw:Lesson a owl:Class ;
+    rdfs:subClassOf schema:CourseInstance ;
+    rdfs:label "Lesson"@en ;
+    rdfs:comment "A single lesson within a course" ;
+    skos:definition "A discrete learning unit within a course containing instructions, starter code, and assessment tests."@en ;
+    dcterms:description "Maps to the 'lessons' table. Contains instructions, starter code, and tests." .
+
+sw:Skill a owl:Class ;
+    rdfs:subClassOf schema:DefinedTerm ;
+    rdfs:label "Skill"@en ;
+    rdfs:comment "A teachable skill in software development" ;
+    skos:definition "A discrete, teachable capability that can be learned and demonstrated through practice and assessment."@en ;
+    dcterms:description "A discrete skill that can be taught and demonstrated" .
+
+sw:Competency a owl:Class ;
+    rdfs:label "Competency"@en ;
+    rdfs:comment "A demonstrable competency that can be assessed" ;
+    skos:definition "A demonstrable ability that a learner can demonstrate after completing relevant lessons and passing assessments."@en ;
+    dcterms:description "Something a learner can demonstrate after completing relevant lessons" .
+
+sw:LearningPath a owl:Class ;
+    rdfs:label "Learning Path"@en ;
+    rdfs:comment "An ordered sequence of courses for achieving a learning goal" ;
+    skos:definition "An ordered sequence of courses designed to achieve a specific learning objective or career goal."@en .
+
+sw:Assessment a owl:Class ;
+    rdfs:label "Assessment"@en ;
+    rdfs:comment "An evaluation mechanism for measuring learning" ;
+    skos:definition "An evaluation mechanism for measuring a learner's understanding and competency in a specific topic."@en .
+
+sw:Student a owl:Class ;
+    rdfs:subClassOf schema:Person ;
+    rdfs:label "Student"@en ;
+    rdfs:comment "A learner in the system" ;
+    skos:definition "An individual learner enrolled in courses and progressing through learning paths in the system."@en .
+
+sw:Concept a owl:Class ;
+    rdfs:label "Concept"@en ;
+    rdfs:comment "An abstract learning concept or topic" ;
+    skos:definition "An abstract learning concept or topic that can be taught and learned."@en .
+
+sw:Role a owl:Class ;
+    rdfs:label "Role"@en ;
+    rdfs:comment "A career role in software development" ;
+    skos:definition "A career role or job function in software development (e.g., SRE, Data Scientist, Backend Engineer)."@en .
+
+# =============================================================================
+# Object Properties
+# =============================================================================
+
+sw:belongsToDomain a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:Domains ;
+    rdfs:label "belongs to domain" ;
+    rdfs:comment "The application domain this course belongs to" .
+
+sw:hasPrerequisite a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:Course ;
+    rdfs:label "has prerequisite" ;
+    rdfs:comment "A course that should be completed before this one" .
+    
+sw:hasPrerequisite owl:propertyChainAxiom (sw:hasPrerequisite sw:hasPrerequisite) .
+
+sw:teachesSkill a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:Skill ;
+    rdfs:label "teaches skill" ;
+    rdfs:comment "A skill this course teaches" .
+
+sw:assessesCompetency a owl:ObjectProperty ;
+    rdfs:domain sw:Lesson ;
+    rdfs:range sw:Competency ;
+    rdfs:label "assesses competency" ;
+    rdfs:comment "A competency this lesson assesses" .
+
+sw:hasLesson a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:Lesson ;
+    rdfs:label "has lesson" ;
+    rdfs:comment "A lesson contained in this course" .
+
+sw:hasNextLesson a owl:ObjectProperty ;
+    rdfs:domain sw:Lesson ;
+    rdfs:range sw:Lesson ;
+    rdfs:label "has next lesson" ;
+    rdfs:comment "The next lesson in the sequence" .
+
+sw:hasAssessment a owl:ObjectProperty ;
+    rdfs:domain sw:Lesson ;
+    rdfs:range sw:Assessment ;
+    rdfs:label "has assessment" ;
+    rdfs:comment "An assessment for this lesson" .
+
+sw:hasDifficultyLevel a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:DifficultyLevel ;
+    rdfs:label "has difficulty level" ;
+    rdfs:comment "The difficulty level of this course" .
+
+sw:requiresCompetency a owl:ObjectProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range sw:Competency ;
+    rdfs:label "requires competency" ;
+    rdfs:comment "A competency required before starting this course" .
+
+sw:demonstrates a owl:ObjectProperty ;
+    rdfs:domain sw:Student ;
+    rdfs:range sw:Competency ;
+    rdfs:label "demonstrates" ;
+    rdfs:comment "A competency demonstrated by this student" .
+
+sw:hasLearningPath a owl:ObjectProperty ;
+    rdfs:domain sw:Student ;
+    rdfs:range sw:LearningPath ;
+    rdfs:label "has learning path" ;
+    rdfs:comment "The learning path assigned to this student" .
+
+# =============================================================================
+# Competency Question Properties
+# =============================================================================
+
+sw:requiresPrerequisite a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Skill ;
+    rdfs:label "requires prerequisite" ;
+    rdfs:comment "A skill that must be learned before this one" ;
+    skos:definition "What must be learned first before studying this skill"@en .
+
+sw:buildsToward a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Skill ;
+    rdfs:label "builds toward" ;
+    rdfs:comment "A more advanced skill that this skill progresses toward" ;
+    skos:definition "What a skill progresses toward through continued learning"@en .
+
+sw:isUsefulFor a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Concept ;
+    rdfs:label "is useful for" ;
+    rdfs:comment "A domain or project type this skill enables" ;
+    skos:definition "What a skill enables or makes possible"@en .
+
+sw:isAppropriateFor a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Role ;
+    rdfs:label "is appropriate for" ;
+    rdfs:comment "A career role where this skill is applicable" ;
+    skos:definition "Suitability mapping between skills and roles"@en .
+
+sw:requiresSkill a owl:ObjectProperty ;
+    rdfs:domain sw:Role ;
+    rdfs:range sw:Skill ;
+    rdfs:label "requires skill" ;
+    rdfs:comment "A skill required for this role" ;
+    skos:definition "Competencies required to achieve readiness for a role"@en .
+
+sw:enablesProject a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Concept ;
+    rdfs:label "enables project" ;
+    rdfs:comment "A project type this skill enables" ;
+    skos:definition "Project capabilities unlocked by mastering this skill"@en .
+
+sw:relatedToRole a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Role ;
+    rdfs:label "related to role" ;
+    rdfs:comment "A career role related to this skill" ;
+    skos:definition "Career pathway connections between skills and roles"@en .
+
+sw:nextRecommendedTopic a owl:ObjectProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range sw:Skill ;
+    rdfs:label "next recommended topic" ;
+    rdfs:comment "The next topic to study after mastering this skill" ;
+    skos:definition "Sequential learning recommendations for continued progression"@en .
+
+# =============================================================================
+# Datatype Properties
+# =============================================================================
+
+sw:termCode a owl:DatatypeProperty ;
+    rdfs:domain sw:Skill ;
+    rdfs:range xsd:string ;
+    rdfs:label "term code" ;
+    rdfs:comment "Unique identifier for the skill (e.g., GO-FUNCTIONS-001)" .
+
+sw:estimatedHours a owl:DatatypeProperty ;
+    rdfs:domain sw:Course ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "estimated hours" ;
+    rdfs:comment "Estimated completion time in hours" .
+
+sw:masteryThreshold a owl:DatatypeProperty ;
+    rdfs:domain sw:Competency ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "mastery threshold" ;
+    rdfs:comment "Minimum score (0.0-1.0) to demonstrate competency" .
+
+sw:orderIndex a owl:DatatypeProperty ;
+    rdfs:domain sw:Lesson ;
+    rdfs:range xsd:integer ;
+    rdfs:label "order index" ;
+    rdfs:comment "Position of this lesson in the course sequence" .
+
+sw:score a owl:DatatypeProperty ;
+    rdfs:domain sw:Competency ;
+    rdfs:range xsd:decimal ;
+    rdfs:label "score" ;
+    rdfs:comment "Score achieved (0.0 to 100.0)" .
+
+# =============================================================================
+# Example Instance: Go Basics Course
+# =============================================================================
+
+<http://soypete.tech/l2ws/course/go-basics>
+    a sw:Course ;
+    rdfs:label "Go Basics"@en ;
+    dcterms:title "Go Basics" ;
+    dcterms:description "Learn the fundamentals of Go programming language" ;
+    sw:belongsToDomain sw:SystemsProgramming ;
+    sw:hasDifficultyLevel sw:Beginner ;
+    sw:teachesSkill <http://soypete.tech/l2ws/skill/go-syntax> ;
+    sw:teachesSkill <http://soypete.tech/l2ws/skill/go-functions> ;
+    sw:hasPrerequisite sw:ProgrammingFundamentals ;
+    sw:estimatedHours "10"^^xsd:decimal .
+
+<http://soypete.tech/l2ws/skill/go-syntax>
+    a sw:Skill ;
+    rdfs:label "Go Syntax"@en ;
+    sw:termCode "GO-SYNTAX-001" ;
+    skos:broader sw:Syntax ;
+    skos:definition "Understanding Go language syntax including packages, imports, and basic statements"@en .
+
+<http://soypete.tech/l2ws/skill/go-functions>
+    a sw:Skill ;
+    rdfs:label "Go Functions"@en ;
+    sw:termCode "GO-FUNCTIONS-001" ;
+    skos:broader sw:Functions ;
+    skos:definition "Defining and using functions in Go, including parameters, return values, and closures"@en .
+
+sw:ProgrammingFundamentals a sw:Course ;
+    rdfs:label "Programming Fundamentals"@en ;
+    sw:hasDifficultyLevel sw:Beginner ;
+    skos:definition "Basic programming concepts applicable to any language"@en .
+
+# =============================================================================
+# Specific Technology Instances (ABox)
+# =============================================================================
+
+<http://soypete.tech/l2ws/tech/go>
+    a sw:Skill ;
+    rdfs:label "Go"@en ;
+    sw:termCode "GO-001" ;
+    skos:broader sw:SystemsProgramming ;
+    skos:definition "The Go programming language. A compiled, statically typed language designed for simplicity, concurrency, and reliability."@en ;
+    sw:isUsefulFor sw:Microservices ;
+    sw:isUsefulFor sw:CLI ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/backend-engineer> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/sre> .
+
+<http://soypete.tech/l2ws/tech/kubernetes>
+    a sw:Skill ;
+    rdfs:label "Kubernetes"@en ;
+    sw:termCode "K8S-001" ;
+    skos:broader sw:Containerization ;
+    skos:broader sw:DevOps ;
+    skos:definition "An open-source container orchestration platform for automating deployment, scaling, and management of containerized applications."@en ;
+    sw:requiresPrerequisite <http://soypete.tech/l2ws/tech/containers> ;
+    sw:requiresPrerequisite <http://soypete.tech/l2ws/tech/linux> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/sre> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/platform-engineer> .
+
+<http://soypete.tech/l2ws/tech/react>
+    a sw:Skill ;
+    rdfs:label "React"@en ;
+    sw:termCode "REACT-001" ;
+    skos:broader sw:WebDevelopment ;
+    skos:definition "A JavaScript library for building user interfaces. Uses component-based architecture and virtual DOM."@en ;
+    sw:requiresPrerequisite <http://soypete.tech/l2ws/tech/javascript> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/frontend-engineer> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/fullstack-engineer> .
+
+<http://soypete.tech/l2ws/tech/python>
+    a sw:Skill ;
+    rdfs:label "Python"@en ;
+    sw:termCode "PY-001" ;
+    skos:broader sw:DataScience ;
+    skos:definition "A high-level, interpreted programming language known for its readability and versatility. Widely used in data science, ML, and web development."@en ;
+    sw:isUsefulFor sw:MachineLearning ;
+    sw:isUsefulFor sw:DataScience ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/data-scientist> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/ml-engineer> .
+
+<http://soypete.tech/l2ws/tech/containers>
+    a sw:Skill ;
+    rdfs:label "Containers"@en ;
+    sw:termCode "CONTAINER-001" ;
+    skos:broader sw:Containerization ;
+    skos:definition "Lightweight, standalone executable packages that include everything needed to run software."@en ;
+    skos:scopeNote "Generic container concept. Specific tools like Docker and Podman are instances."@en .
+
+<http://soypete.tech/l2ws/tech/docker>
+    a sw:Skill ;
+    rdfs:label "Docker"@en ;
+    sw:termCode "DOCKER-001" ;
+    skos:broader sw:Containerization ;
+    skos:definition "A platform for building, running, and managing containers using containerd runtime."@en ;
+    sw:isUsefulFor sw:DevOps ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/sre> ;
+    sw:buildsToward <http://soypete.tech/l2ws/tech/kubernetes> .
+
+<http://soypete.tech/l2ws/tech/linux>
+    a sw:Skill ;
+    rdfs:label "Linux"@en ;
+    skos:broader sw:Infrastructure ;
+    skos:definition "The Linux operating system. Fundamental for server administration, DevOps, and systems programming."@en ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/sre> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/systems-programmer> .
+
+<http://soypete.tech/l2ws/tech/javascript>
+    a sw:Skill ;
+    rdfs:label "JavaScript"@en ;
+    sw:termCode "JS-001" ;
+    skos:broader sw:WebDevelopment ;
+    skos:definition "A high-level, dynamic programming language primarily used for web development in browsers and on servers (Node.js)."@en ;
+    sw:buildsToward <http://soypete.tech/l2ws/tech/react> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/frontend-engineer> ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/fullstack-engineer> .
+
+<http://soypete.tech/l2ws/tech/c>
+    a sw:Skill ;
+    rdfs:label "C Programming"@en ;
+    sw:termCode "C-001" ;
+    skos:broader sw:SystemsProgramming ;
+    skos:definition "The C programming language. A low-level, imperative language that provides direct access to memory and hardware."@en ;
+    sw:isAppropriateFor <http://soypete.tech/l2ws/role/systems-programmer> ;
+    sw:buildsToward sw:MemoryManagement .
+
+# =============================================================================
+# Career Roles (ABox)
+# =============================================================================
+
+<http://soypete.tech/l2ws/role/sre>
+    a sw:Role ;
+    rdfs:label "Site Reliability Engineer"@en ;
+    skos:definition "An engineer focused on ensuring reliability, scalability, and performance of production systems."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/linux> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/containers> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/kubernetes> ;
+    sw:requiresSkill sw:DevOps ;
+    sw:requiresSkill sw:CICD .
+
+<http://soypete.tech/l2ws/role/data-scientist>
+    a sw:Role ;
+    rdfs:label "Data Scientist"@en ;
+    skos:definition "A professional who extracts insights from data using statistics, programming, and domain expertise."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/python> ;
+    sw:requiresSkill sw:MachineLearning ;
+    sw:requiresSkill sw:DataModeling ;
+    sw:requiresSkill sw:DataStructures .
+
+<http://soypete.tech/l2ws/role/backend-engineer>
+    a sw:Role ;
+    rdfs:label "Backend Engineer"@en ;
+    skos:definition "An engineer focused on server-side development, APIs, and database integration."@en ;
+    sw:requiresSkill sw:Functions ;
+    sw:requiresSkill sw:SQL ;
+    sw:requiresSkill sw:APIDesign .
+
+<http://soypete.tech/l2ws/role/frontend-engineer>
+    a sw:Role ;
+    rdfs:label "Frontend Engineer"@en ;
+    skos:definition "An engineer focused on client-side development, user interfaces, and web technologies."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/javascript> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/react> ;
+    sw:requiresSkill sw:WebDevelopment .
+
+<http://soypete.tech/l2ws/role/fullstack-engineer>
+    a sw:Role ;
+    rdfs:label "Full-Stack Engineer"@en ;
+    skos:definition "An engineer who works on both client-side and server-side of applications."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/javascript> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/react> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/go> ;
+    sw:requiresSkill sw:SQL .
+
+<http://soypete.tech/l2ws/role/systems-programmer>
+    a sw:Role ;
+    rdfs:label "Systems Programmer"@en ;
+    skos:definition "A programmer focused on low-level systems software like operating systems, drivers, and embedded systems."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/linux> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/c> ;
+    sw:requiresSkill sw:MemoryManagement .
+
+<http://soypete.tech/l2ws/role/platform-engineer>
+    a sw:Role ;
+    rdfs:label "Platform Engineer"@en ;
+    skos:definition "An engineer who builds and maintains internal platforms and infrastructure for product teams."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/kubernetes> ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/docker> ;
+    sw:requiresSkill sw:InfrastructureAsCode ;
+    sw:requiresSkill sw:CloudComputing .
+
+<http://soypete.tech/l2ws/role/ml-engineer>
+    a sw:Role ;
+    rdfs:label "ML Engineer"@en ;
+    skos:definition "An engineer who builds and deploys machine learning models into production systems."@en ;
+    sw:requiresSkill <http://soypete.tech/l2ws/tech/python> ;
+    sw:requiresSkill sw:MachineLearning ;
+    sw:requiresSkill sw:LLMEngineering .
