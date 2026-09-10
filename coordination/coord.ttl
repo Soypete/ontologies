@@ -38,7 +38,7 @@
     a owl:Ontology ;
     dcterms:title "Coordination T-box" ;
     dcterms:description "A closed OWL vocabulary for coordinating multiple AI coding agents through a shared, searchable, typed wiki log: entity types (captures), link predicates, and the request -> decision -> ack protocol." ;
-    dcterms:creator "Miriah" ;
+    dcterms:creator "Haikei Labs" ;
     dcterms:created "2026-09-10"^^xsd:date ;
     owl:versionInfo "1.0.0" .
 
