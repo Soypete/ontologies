@@ -10,6 +10,7 @@ RDF/OWL ontologies for learning software development concepts. Published via Git
 | `thesaurus/` | SKOS thesauri for testing RDF inference |
 | `education/` | Learning ontologies (L2WS, edu) with TBOX definitions |
 | `social/` | Topic SKOS thesauri (Twitch topics) |
+| `coordination/` | Coordination T-box for multi-agent wiki workflows |
 
 ## Ontologies
 
@@ -66,6 +67,18 @@ RDF/OWL ontologies for learning software development concepts. Published via Git
 **twitch_topics.ttl** - Twitch Stream Topics Thesaurus
 - SKOS concepts for Twitch streaming topics
 - Programming languages, AI/ML, Infrastructure, Database categories
+
+### coordination/
+
+**coord.ttl** - Coordination T-box
+- Closed OWL vocabulary for coordinating multiple AI coding agents through a shared, searchable, typed wiki log
+- 10 entity types (Source, Claim, Entity, Contradiction, Decision, Blocker, Handoff, Ack, Release, ContractChange)
+- 8 link predicates (derivedFrom, contradicts, supports, about, relatesTo, answers, acknowledges, blocks)
+- Models the request -> decision -> ack protocol with a RequestStatus state machine (Open, Answered, Acknowledged)
+
+**README.md** - Coordination pattern documentation
+- The two-channel rule (wiki is the system of record; prompts carry only instructions)
+- The R -> D -> ack protocol, the claim rule, and how to adopt the pattern yourself
 
 ## Competency Questions
 

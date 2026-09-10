@@ -1,0 +1,246 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix coord: <http://soypete.tech/coord/> .
+
+# =============================================================================
+# coord.ttl - Coordination T-box
+# =============================================================================
+#
+# Formal RDF description of the closed capture vocabulary used by the herdr
+# wiki plugin (github.com/Soypete/herdr-wiki-plugin) to coordinate multiple
+# AI coding agents editing the same repositories.
+#
+# The plugin loads the vocabulary from a TOML file (haikei_wiki/starter_tbox.toml),
+# which is the runtime authority at the capture write boundary. This ontology
+# is the formal, linkable description of the SAME terms: it does not load into
+# the plugin, and nothing here changes plugin code. See coordination/README.md
+# for the pattern and the two-channel (wiki / prompt) rule.
+#
+# CLOSED vocabulary: a capture whose entity type or link predicate is not
+# listed here is rejected. Nothing is normalized or coerced to a default.
+# Extending this T-box is a deliberate human decision, never an agent invention.
+#
+# Deliberately NOT the education T-box (education/TBOX_LEARNING_SOFTWARE.ttl,
+# namespace http://soypete.tech/l2ws/), which models software curricula.
+# Captures must not be typed with sw: terms. This ontology imports nothing.
+#
+# Namespace: http://soypete.tech/coord/
+# Version: 1.0.0
+# Created: 2026-09-10
+# Decided by Miriah 2026-09-10 (wiki decision D-001, PART 1)
+# =============================================================================
+
+<http://soypete.tech/coord>
+    a owl:Ontology ;
+    dcterms:title "Coordination T-box" ;
+    dcterms:description "A closed OWL vocabulary for coordinating multiple AI coding agents through a shared, searchable, typed wiki log: entity types (captures), link predicates, and the request -> decision -> ack protocol." ;
+    dcterms:creator "Haikei Labs" ;
+    dcterms:created "2026-09-10"^^xsd:date ;
+    owl:versionInfo "1.0.0" .
+
+# =============================================================================
+# Entity Types (capture types)
+# =============================================================================
+#
+# These are the ten capture types the wiki accepts. Each maps one-to-one to a
+# key in the plugin's TOML vocabulary (recorded in skos:scopeNote so the
+# mapping is unambiguous). Note that contract_change uses an underscore in the
+# TOML key while the class name is CamelCase.
+#
+# Protocol note: a decision request is captured as a Claim- or Decision-typed
+# entry whose title follows the `requests/R-NNN-<slug>` convention. The current
+# wiki has no separate namespace or status field for requests - the title
+# convention carries the identity, and the status model below carries the
+# lifecycle.
+
+coord:Source a owl:Class ;
+    rdfs:label "Source"@en ;
+    rdfs:comment "An immutable raw source document ingested into the wiki" ;
+    skos:definition "An immutable raw source document ingested into the wiki (raw/ plus a wiki page)."@en ;
+    skos:scopeNote "TOML key: source. A Source is the ground truth a Claim is derived from."@en .
+
+coord:Claim a owl:Class ;
+    rdfs:label "Claim"@en ;
+    rdfs:comment "A discrete assertion extracted from a source, conversation, or pane" ;
+    skos:definition "A discrete assertion extracted from a source, conversation, or pane."@en ;
+    skos:scopeNote "TOML key: claim. The unit of shared knowledge; ownership claims and decision requests (titled requests/R-NNN-<slug>) are typical captures."@en .
+
+coord:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    rdfs:comment "A named thing worth its own page" ;
+    skos:definition "A named thing (person, project, tool, concept) worth its own page."@en ;
+    skos:scopeNote "TOML key: entity. The target of the about predicate."@en .
+
+coord:Contradiction a owl:Class ;
+    rdfs:label "Contradiction"@en ;
+    rdfs:comment "A recorded conflict between two claims or pages" ;
+    skos:definition "A recorded conflict between two claims or pages."@en ;
+    skos:scopeNote "TOML key: contradiction. Record the conflict explicitly rather than letting it surface as a merge conflict."@en .
+
+coord:Decision a owl:Class ;
+    rdfs:label "Decision"@en ;
+    rdfs:comment "A recorded decision with its context and rationale" ;
+    skos:definition "A recorded decision with its context and rationale."@en ;
+    skos:scopeNote "TOML key: decision. A Decision answers a request (coord:answers) and is acknowledged by an Ack (coord:acknowledges)."@en .
+
+coord:Blocker a owl:Class ;
+    rdfs:label "Blocker"@en ;
+    rdfs:comment "A blocking issue that stalls the dependent task until resolved" ;
+    skos:definition "A blocking issue that stalls the dependent task until resolved."@en ;
+    skos:scopeNote "TOML key: blocker. Written instead of editing when an overlapping claim is found or a stop condition is hit."@en .
+
+coord:Handoff a owl:Class ;
+    rdfs:label "Handoff"@en ;
+    rdfs:comment "A task or claim passed from one agent or context to another" ;
+    skos:definition "A task or claim passed from one agent or context to another."@en ;
+    skos:scopeNote "TOML key: handoff. A Handoff transfers ownership; the receiving agent responds with an Ack."@en .
+
+coord:Ack a owl:Class ;
+    rdfs:label "Ack"@en ;
+    rdfs:comment "An acknowledgment that a handoff, request, or decision was received" ;
+    skos:definition "An acknowledgment that a handoff, request, or decision was received."@en ;
+    skos:scopeNote "TOML key: ack. Written by the worker after being resumed; restates in one line what the agent will now do."@en .
+
+coord:Release a owl:Class ;
+    rdfs:label "Release"@en ;
+    rdfs:comment "A declared release of a resource, lock, or responsibility" ;
+    skos:definition "A declared release of a resource, lock, or responsibility."@en ;
+    skos:scopeNote "TOML key: release. The inverse of a claim: frees a resource so another agent may claim it."@en .
+
+coord:ContractChange a owl:Class ;
+    rdfs:label "Contract Change"@en ;
+    rdfs:comment "A change to an inter-agent contract, such as the coordination protocol" ;
+    skos:definition "A change to an inter-agent contract, such as the coordination protocol."@en ;
+    skos:scopeNote "TOML key: contract_change (underscore in the TOML key; class name is ContractChange). Extending the closed vocabulary is a ContractChange, not an agent invention."@en .
+
+# =============================================================================
+# Link Predicates
+# =============================================================================
+#
+# The eight link predicates a capture may use to point at another capture.
+# Each maps one-to-one to a TOML key (recorded in skos:scopeNote). The general
+# predicates (relatesTo, about) keep a broad domain and say so in their
+# scopeNote rather than forcing a narrow one.
+
+coord:derivedFrom a owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range coord:Source ;
+    rdfs:label "derived from" ;
+    rdfs:comment "This capture is derived from the target source or page" ;
+    skos:definition "This capture is derived from the target source/page."@en ;
+    skos:scopeNote "TOML key: derived_from. Typically a Claim derived from a Source; may also target another capture that acted as the source."@en .
+
+coord:contradicts a owl:ObjectProperty ;
+    rdfs:domain coord:Claim ;
+    rdfs:range coord:Claim ;
+    rdfs:label "contradicts" ;
+    rdfs:comment "This claim or page contradicts the target" ;
+    skos:definition "This claim or page contradicts the target."@en ;
+    skos:scopeNote "TOML key: contradicts. Use a Contradiction capture to record the conflict, then link it to each side."@en .
+
+coord:supports a owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range coord:Claim ;
+    rdfs:label "supports" ;
+    rdfs:comment "This capture provides evidence supporting the target claim" ;
+    skos:definition "This capture provides evidence supporting the target claim."@en ;
+    skos:scopeNote "TOML key: supports. The subject is usually a Source or a second Claim providing evidence."@en .
+
+coord:about a owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range coord:Entity ;
+    rdfs:label "about" ;
+    rdfs:comment "This capture is about the target entity" ;
+    skos:definition "This capture is about the target entity."@en ;
+    skos:scopeNote "TOML key: about. Genuinely general by design - any capture can be about an Entity. The domain is intentionally broad."@en .
+
+coord:relatesTo a owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing ;
+    rdfs:label "relates to" ;
+    rdfs:comment "General association with the target page" ;
+    skos:definition "General association with the target page."@en ;
+    skos:scopeNote "TOML key: relates_to. The most general predicate; use it only when nothing more specific (derived_from, contradicts, supports, about, answers, acknowledges, blocks) applies."@en .
+
+coord:answers a owl:ObjectProperty ;
+    rdfs:domain coord:Decision ;
+    rdfs:range coord:Claim ;
+    rdfs:label "answers" ;
+    rdfs:comment "This capture answers the target request or question" ;
+    skos:definition "This capture answers the target request or question."@en ;
+    skos:scopeNote "TOML key: answers. In the R -> D -> ack cycle a Decision answers the request it was written for. A request is a Claim- or Decision-typed capture titled requests/R-NNN-<slug>; the range is declared as Claim for the common case, and a Decision-typed request is an equally valid target."@en .
+
+coord:acknowledges a owl:ObjectProperty ;
+    rdfs:domain coord:Ack ;
+    rdfs:range coord:Decision ;
+    rdfs:label "acknowledges" ;
+    rdfs:comment "This capture acknowledges the target handoff, request, or decision" ;
+    skos:definition "This capture acknowledges the target handoff, request, or decision."@en ;
+    skos:scopeNote "TOML key: acknowledges. In the R -> D -> ack cycle an Ack acknowledges the Decision that answered its request; the target may equally be a Handoff or a request capture."@en .
+
+coord:blocks a owl:ObjectProperty ;
+    rdfs:domain coord:Blocker ;
+    rdfs:range owl:Thing ;
+    rdfs:label "blocks" ;
+    rdfs:comment "This capture blocks the target task until resolved" ;
+    skos:definition "This capture blocks the target task until resolved."@en ;
+    skos:scopeNote "TOML key: blocks. The target is typically a task, claim, or the request that the blocker stalls. The range is broad because a Blocker may stall any of these."@en .
+
+# =============================================================================
+# Request Status Model (request -> decision -> ack lifecycle)
+# =============================================================================
+#
+# Modelling choice: the protocol lifecycle (a request is open, then answered,
+# then acknowledged) is represented with a coord:RequestStatus class whose
+# individuals coord:Open, coord:Answered, coord:Acknowledged mark the current
+# state, and a coord:status object property pointing a request at its state.
+#
+# This is a deliberately light model: no separate Request class is introduced
+# (the wiki types decision requests as Claim/Decision captures, see the banner
+# note on the requests/R-NNN-<slug> convention), and no transition axioms are
+# asserted - the ordering is documented here rather than encoded, so the model
+# stays a description of the protocol rather than an enforcement engine.
+#
+# Transition rules:
+#   Open         - initial state; the request has been written and the worker
+#                  is BLOCKED waiting.
+#   Answered     - the orchestrator recorded the Decision and linked it to the
+#                  request with coord:answers.
+#   Acknowledged - the worker wrote an Ack linked to the Decision with
+#                  coord:acknowledges; the cycle is complete.
+#
+# The coordinator coordinates the state in the wiki, not in prompts: prompts
+# only point agents at these entries.
+
+coord:RequestStatus a owl:Class ;
+    rdfs:label "Request Status"@en ;
+    rdfs:comment "The lifecycle state of a decision request" ;
+    skos:definition "The state of a decision request in the request -> decision -> ack cycle: Open, Answered, or Acknowledged."@en ;
+    skos:scopeNote "Values are the individuals coord:Open, coord:Answered, coord:Acknowledged. Not itself a capture type - it qualifies one."@en .
+
+coord:status a owl:ObjectProperty ;
+    rdfs:domain owl:Thing ;
+    rdfs:range coord:RequestStatus ;
+    rdfs:label "status" ;
+    rdfs:comment "The lifecycle state of a request" ;
+    skos:definition "Points a request capture at its RequestStatus individual."@en ;
+    skos:scopeNote "In practice the subject is a Claim- or Decision-typed request titled requests/R-NNN-<slug>; the domain is left broad because the wiki has no dedicated request type."@en .
+
+coord:Open a coord:RequestStatus ;
+    rdfs:label "Open"@en ;
+    skos:definition "Initial state: the request has been written and the worker has printed BLOCKED and stopped."@en ;
+    skos:scopeNote "A request in this state is waiting for the orchestrator to add analysis and surface it to a human."@en .
+
+coord:Answered a coord:RequestStatus ;
+    rdfs:label "Answered"@en ;
+    skos:definition "State after the orchestrator records the Decision and links it to the request with coord:answers."@en ;
+    skos:scopeNote "A request in this state has a decision but the worker has not yet confirmed receipt."@en .
+
+coord:Acknowledged a coord:RequestStatus ;
+    rdfs:label "Acknowledged"@en ;
+    skos:definition "Final state: the worker wrote an Ack linked to the Decision with coord:acknowledges, restating in one line what it will now do."@en ;
+    skos:scopeNote "A request in this state is complete; any cascade to affected workers follows the same Open -> Answered -> Acknowledged path."@en .
