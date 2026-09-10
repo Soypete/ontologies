@@ -8,3 +8,4 @@ RDF/OWL ontology repository for open-source tech ontologies. Contains Turtle (.t
 - `thesaurus/` - SKOSthesauri for testing inference
 - `education/` - Learning ontologies (L2WS, edu)
 - `social/` - Topic thesauri (Twitch topics)
+- `coordination/` - Coordination T-box for multi-agent wiki workflows
